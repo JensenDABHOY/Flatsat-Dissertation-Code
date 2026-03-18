@@ -7,7 +7,7 @@ Document version: 2026-02-27 (UTC)
 - `ground_station_16.py` (laptop): TCP client + curses terminal + stateful CSV logger.
 - `spectral_proc.c` (Raspberry Pi): C executable for spectral line detection/fitting; called from `flatsat_ops.py`.
 - `flatsat_log_analysis.ipynb`: telemetry/event analysis notebook for the downlinked CSV sessions.
-- `spectrometer_characterization_from_tiffs.ipynb`: full spectrometer characterization workflow from TIFF stacks (dark subtraction, spot metrics, UV calibration, and resolution summary).
+- `spectrometer_characterization_from_tiffs.ipynb`: dissertation notebook for TIFF-stack spectrometer characterization, covering dark subtraction, stacking diagnostics, IR spot-size analysis, UV wavelength calibration, and UV resolving-power estimation.
 - `spectral_res calc.ipynb`: small scratch notebook for quick spectral-resolution calculations.
 
 ## High-Level System Flow
@@ -154,12 +154,26 @@ Informational lines (shown live, not CSV rows):
 - Plots event rates, IMU/accel data, motor behavior, sun sensor trends, camera bright-pixel behavior, and spectral summary stats.
 
 ### `spectrometer_characterization_from_tiffs.ipynb`
+- Purpose:
+  convert the raw TIFF frame sets into a documented characterization workflow for the spectrometer, with IR image-domain spot metrics and UV spectral calibration derived from source and detector priors.
 - Expects TIFF datasets under `C:\Work\Dissertation\Data` in subfolders:
   - `no laser`
   - `laser`
   - `IR source better` (fallback: `IR source`)
   - `UV`
-- Produces common-crop stacked images, histogram/SNR diagnostics, row-sum 1D profiles with propagated uncertainties, IR spot-size metrics with bootstrap uncertainty, UV wavelength calibration, and UV resolving-power summary.
+- Main processing stages:
+  - load the TIFF stacks and place them into a common frame geometry and crop;
+  - build a master dark frame and apply dark subtraction to the science sets;
+  - generate stacked-frame views, histograms, and basic SNR diagnostics;
+  - extract row-sum 1D profiles with propagated uncertainties;
+  - estimate IR main-spot size metrics directly from the stacked image;
+  - build the UV source prior and detector prior, fit the UV spectrum, and derive the wavelength map;
+  - compute the UV resolving power from the fitted wavelength solution.
+- Main outputs:
+  - corrected stacked images for the laser, IR, and UV datasets;
+  - histogram and SNR quality-control plots;
+  - IR spot-size summary table with bootstrap uncertainties;
+  - UV source/detector prior plots, wavelength-calibration plots, calibrated UV spectrum, and resolution summary.
 - If PDF digitization dependencies are unavailable, UV source prior automatically falls back to embedded anchor points.
 - This file is the tracked working version of the TIFF-based spectrometer characterization analysis.
 
