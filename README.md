@@ -159,8 +159,9 @@ Informational lines (shown live, not CSV rows):
   - `laser`
   - `IR source better` (fallback: `IR source`)
   - `UV`
-- Produces dark-subtracted stacks, histogram/SNR diagnostics, row-aligned 1D profiles, IR spot-size metrics with bootstrap uncertainty, UV wavelength calibration, and pixel-limited resolving-power summary.
+- Produces common-crop stacked images, histogram/SNR diagnostics, row-sum 1D profiles with propagated uncertainties, IR spot-size metrics with bootstrap uncertainty, UV wavelength calibration, and UV resolving-power summary.
 - If PDF digitization dependencies are unavailable, UV source prior automatically falls back to embedded anchor points.
+- This file is the tracked working version of the TIFF-based spectrometer characterization analysis.
 
 ### `spectral_res calc.ipynb`
 - Lightweight manual calculation notebook used for quick checks.
